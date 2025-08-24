@@ -1,55 +1,94 @@
-import Image from "next/image";
-import type { Metadata } from "next";
+// app/jp/about/page.tsx
+import { sanityClient } from "@/lib/sanity";
 import ImageCarousel from "@/components/ImageCarousel";
 
-export const metadata: Metadata = {
-  title: "About Us | Tokyo Chess Club (JP)",
-};
+export const revalidate = 86400; // 24 hours
 
-export default function AboutPageJP() {
+interface InfoSection {
+  joinText: string;
+  locationName: string;
+  locationLink: string;
+  time: string;
+}
+
+interface AboutPageProps {
+  description: string;
+  infoSection: InfoSection;
+}
+
+export default async function AboutPage() {
+  // Fetch the Japanese About page content from Sanity
+  const query = `*[_type == "aboutPage" && language == "JP"][0]{
+    description,
+    infoSection
+  }`;
+
+  const data: AboutPageProps = await sanityClient.fetch(query);
+  const { description, infoSection } = data;
+
+  // Fetch gallery images
+  const galleryQuery = `*[_type == "gallery"]{
+    "images": images[].asset->url
+  }`;
+  const galleryData: { images: string[] }[] = await sanityClient.fetch(galleryQuery);
+  const galleryImages = galleryData.length > 0 ? galleryData[0].images : [];
+
   return (
-    <main className="w-full py-5 bg-black text-white">
-      <header className="flex justify-center items-center py-5 min-w-0">
-        <Image
+    <main className="w-full min-h-screen py-5 bg-black text-white">
+      {/* Logo Section */}
+      <header className="flex justify-center items-center py-6">
+        <img
           src="/images/logos/Logo black.png"
           alt="Tokyo Chess Club Logo"
           width={120}
           height={120}
           className="rounded"
-          />
+          loading="eager"
+        />
       </header>
-      <section className="flex justify-center px-4">
-  <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm">
-    <p className="text-lg leading-relaxed">
-      東京チェックメイツは、東京を拠点とするチェス愛好家たちの活気あるコミュニティです。毎週集まり、地元のパブで飲みながら、ラピッドやブリッツの親しみやすい対局を楽しんでいます。経験豊富な方も初心者の方も、ぜひ私たちと一緒に、チェスと戦略、そして楽しい時間を過ごしましょう。
-    </p>
-  </div>
-</section>
-      <ImageCarousel />
 
-      {/* Info Section: Join Us, Location, Time */}
+      {/* Description */}
+      <section className="flex justify-center px-4">
+        <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm">
+          <p className="text-lg leading-relaxed">{description}</p>
+        </div>
+      </section>
+
+      {/* Gallery carousel */}
+      <ImageCarousel images={galleryImages} />
+
+      {/* Info Section */}
       <section className="flex justify-center px-4 mt-8">
         <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm max-w-xl w-full">
           <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4">
-            <strong>参加しませんか？</strong></p>
+            <strong>{infoSection.joinText}</strong>
+          </p>
           <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4">
-            <strong>場所:</strong> <a href="https://maps.app.goo.gl/ZMcn8KGN32huFjpM7" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">THE ALDGATE British Pub</a>
+            <strong>場所:</strong>{" "}
+            <a
+              href={infoSection.locationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-blue-400"
+            >
+              {infoSection.locationName}
+            </a>
           </p>
           <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-            <strong>時間:</strong> 毎週水曜日 19:30から</p>
+            <strong>時間:</strong> {infoSection.time}
+          </p>
         </div>
       </section>
-      {/* End Info Section */}
-      
+
+      {/* EN About Button */}
       <div className="flex justify-center mt-8">
         <a
           href="/en/about"
-          className="bg-black hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
         >
           English
         </a>
       </div>
-      
     </main>
   );
 }
