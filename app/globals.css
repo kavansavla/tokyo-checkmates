@@ -1,5 +1,55 @@
 @import "tailwindcss";
 
+/* Custom Fonts */
+@font-face {
+  font-family: 'JAPAN';
+  src: url('/fonts/JAPAN.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JAPAN';
+  src: url('/fonts/JAPAN-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JAPAN';
+  src: url('/fonts/JAPAN-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'JAPAN';
+  src: url('/fonts/JAPAN-Bold-Italic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'JAPAN-Light';
+  src: url('/fonts/JAPAN-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'JAPAN-Hollow';
+  src: url('/fonts/JAPAN-Hollow.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'JAPAN-Hollow-Inverse';
+  src: url('/fonts/JAPAN-Hollow-Inverse.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'JAPAN-Inverse';
+  src: url('/fonts/JAPAN-Inverse.ttf') format('truetype');
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

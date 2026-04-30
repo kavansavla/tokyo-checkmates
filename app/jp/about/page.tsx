@@ -49,7 +49,7 @@ export default async function AboutPage() {
 
       {/* Description */}
       <section className="flex justify-center px-4">
-        <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm">
+        <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm" style={{ fontFamily: 'JAPAN-Light' }}>
           <p className="text-lg leading-relaxed">{description}</p>
         </div>
       </section>
@@ -59,7 +59,7 @@ export default async function AboutPage() {
 
       {/* Info Section */}
       <section className="flex justify-center px-4 mt-8">
-        <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm max-w-xl w-full">
+        <div className="text-center bg-black text-white p-6 rounded-2xl shadow-sm max-w-xl w-full" style={{ fontFamily: 'JAPAN-Light' }}>
           <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4">
             <strong>{infoSection.joinText}</strong>
           </p>
